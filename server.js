@@ -9,7 +9,7 @@ const dotenv = require('dotenv').config();
 const history = require('connect-history-api-fallback');
 const serveStatic = require('serve-static');
 const cors = require('cors');
-const { contact, haircutStyles, scheduleAppointment } = require('./routes');
+const { contact, scheduleAppointment } = require('./routes');
 
 app.set('appName', 'FreshCutz');
 app.set('port', dotenv.parsed.PORT || 3001);
@@ -32,7 +32,6 @@ app.use(serveStatic(path.join(__dirname, 'build')));
 app.use(cors());
 
 // Routes
-app.use(haircutStyles);
 app.use(contact);
 app.use(scheduleAppointment);
 
