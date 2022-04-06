@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@mui/material';
 
 type CarouselHaircutStylesCardProps = {
@@ -23,6 +24,8 @@ export default function CarouselHaircutStyleCard({
     img,
     price,
 }: CarouselHaircutStylesCardProps) {
+    const navigate = useNavigate();
+
     return (
         <Card sx={{ maxWidth: 345, margin: '0 auto', marginTop: '20px' }}>
             <Typography gutterBottom variant="h5" component="div">
@@ -43,7 +46,7 @@ export default function CarouselHaircutStyleCard({
                 </Typography>
             </CardContent>
             <CardActions>
-                <StyledButton size='large' variant='contained'>
+                <StyledButton onClick={() => navigate('schedule')} size='large' variant='contained'>
                     Schedule
                 </StyledButton>
             </CardActions>
