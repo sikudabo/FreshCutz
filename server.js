@@ -5,15 +5,13 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const errorHandler = require('errorhandler');
 const logger = require('morgan');
-const dotenv = require('dotenv').config();
 const history = require('connect-history-api-fallback');
 const serveStatic = require('serve-static');
 const cors = require('cors');
 const { contact, scheduleAppointment } = require('./routes');
 
 app.set('appName', 'FreshCutz');
-app.set('port', dotenv.parsed.PORT || 3001);
-console.log('The port for this application is:', dotenv.parsed.port);
+app.set('port', process.env.PORT || 3001);
 
 app.use(logger());
 app.use(errorHandler());

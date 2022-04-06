@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-const dotenv = require('dotenv').config();
 const { HaircutTypes } = require('../models');
 
-mongoose.connect(dotenv.parsed.localDbUri);
+mongoose.connect(process.env.localDbUri);
 
 
 HaircutTypes.updateMany({ transactions: {$exists: 1 }}, {$unset: { transactions: 0 }}, (err, results) => {

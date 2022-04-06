@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-const dotenv = require('dotenv').config();
 const testerModal = require('./testerModal');
 
-mongoose.connect(dotenv.parsed.localDbUri);
+mongoose.connect(process.env.localDbUri);
 
 testerModal.findOne({ firstName: 'Simeon' }, (err, result) => {
     if (err) {

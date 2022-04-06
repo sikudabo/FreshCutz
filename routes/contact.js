@@ -1,12 +1,11 @@
 const router = require('express').Router();
-const dotenv = require('dotenv').config();
 const nodeMailer = require('nodemailer');
 
 const transporter = nodeMailer.createTransport({
-    service: dotenv.parsed.emailService,
+    service: process.env.emailService,
     auth: {
-        user: dotenv.parsed.shopEmail,
-        pass: dotenv.parsed.shopEmailPass,
+        user: process.env.shopEmail,
+        pass: process.env.shopEmailPass,
     },
 });
 
@@ -16,14 +15,11 @@ router.route('/api/contact').post((req, res) => {
     const emailMessage = `Message from ${firstName} ${lastName} \n Phone number: ${phoneNumber} \n \n \n Message: \n ${msg}`;
 
     const mailOptions = {
-        from: dotenv.parsed.shopEmail,
+        from: process.env.shopEmail,
         to: 'lakingsdodgers@gmail.com',
         subject: 'FreshCutz customer contact message alert',
         text: emailMessage,
     };
-
-    console.log('Email is:', dotenv.parsed.shoEmail);
-    console.log('Password is:', dotenv.parsed.shopEmailPass);
 
     transporter.sendMail(mailOptions, err => {
         if (err) {

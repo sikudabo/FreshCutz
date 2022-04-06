@@ -1,17 +1,16 @@
 const router = require('express').Router();
-const dotenv = require('dotenv').config();
 const nodeMailer = require('nodemailer');
-const stripe = require('stripe')(dotenv.parsed.clientSecret);
+const stripe = require('stripe')(process.env.clientSecret);
 const mongoose = require('mongoose');
 const _ = require('underscore');
 
-mongoose.connect(dotenv.parsed.localDbUri);
+mongoose.connect(process.env.localDbUri);
 
 const transporter = nodeMailer.createTransport({
-    service: dotenv.parsed.emailService,
+    service: process.env.emailService,
     auth: {
-        user: dotenv.parsed.shopEmail,
-        pass: dotenv.parsed.shopEmailPass,
+        user: process.env.shopEmail,
+        pass: process.env.shopEmailPass,
     },
 });
 
@@ -53,7 +52,7 @@ router.route('/api/stripe/pay').post(async (req, res) => {
             });
             const emailMessage = `First name: ${firstName} \n Last name: ${lastName} \n Haircut type: ${currentStyle} \n Appointment Date: ${currentDate} \n Contact: ${phoneNumber} \n Payment method: ${isCreditPayment ? 'Credit Card' : 'Cash' }`;
             const mailOptions = {
-                from: dotenv.parsed.shopEmail,
+                from: process.env.shopEmail,
                 to: 'lakingsdodgers@gmail.com',
                 subject: 'FreshCutz appointment scheduled',
                 text: emailMessage,
@@ -73,7 +72,7 @@ router.route('/api/stripe/pay').post(async (req, res) => {
         } else {
         const emailMessage = `First name: ${firstName} \n Last name: ${lastName} \n Haircut type: ${currentStyle} \n Appointment Date: ${currentDate} \n Contact: ${phoneNumber} \n Payment method: ${isCreditPayment ? 'Credit Card' : 'Cash' }`;
         const mailOptions = {
-            from: dotenv.parsed.shopEmail,
+            from: process.env.shopEmail,
             to: 'lakingsdodgers@gmail.com',
             subject: 'FreshCutz appointment scheduled',
             text: emailMessage,
