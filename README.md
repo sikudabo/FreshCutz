@@ -20,3 +20,16 @@ This page displays an interactive view that truly highlights
 the mission behind our brand to the customer. 
 
 ![Home Page](/src/site-screenshots/HomeScreenshot.png)
+
+### See Reviews
+
+See a beautiful carousel display of reviews from prior customers.
+
+![Carousel](/src/site-screenshots/ReviewsScreenshot.png)
+
+### Schedule an appointment
+
+Schedule an appointment quickly online at a selected time and date. 
+You can pay with a credit card or cash. 
+
+![Payment](/src/site-screenshots/ScheduleScreenshot.png)
