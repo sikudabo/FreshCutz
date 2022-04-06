@@ -3,19 +3,15 @@ import styled from '@emotion/styled';
 import axios from 'axios';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
-import TimePicker from '@mui/lab/TimePicker';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { TextField, Switch, Button, Typography, FormControlLabel, FormGroup } from '@mui/material';
+import { TextField, Switch, Typography, FormControlLabel, FormGroup } from '@mui/material';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 
 const cardOptions = {
     iconStyle: 'solid',
@@ -145,7 +141,6 @@ export default function ScheduleAppointment() {
     const [currentStyle, setCurrentStyle] = useState('Razor Line');
     const stripe = useStripe();
     const elements = useElements();
-    const switchLabel = { inputProps: { 'aria-label': 'Switch demo' } };
 
     function handleDateChange(e) {
         const selectedDate = new Date(e);
@@ -158,6 +153,18 @@ export default function ScheduleAppointment() {
         console.log('Updated value is:', !isCreditPayment);
     }
 
+    function handleFirstnameChange(e) {
+        setFirstName(e.target.value);
+    }
+
+    function handleLastnameChange(e) {
+        setLastName(e.target.value);
+    }
+
+    function handlePhoneNumberChange(e) {
+        setPhoneNumber(e);
+    }
+
     async function handleSubmit(e) {
         e.preventDefault();
         const { error, paymentMethod } = await stripe.createPaymentMethod({
@@ -165,27 +172,44 @@ export default function ScheduleAppointment() {
             card: elements.getElement(CardElement),
         });
 
+        if (!lastName) {
+            alert('You must enter a last name to schedule your appointment');
+            return;
+        } else if (!firstName) {
+            alert('You must enter a first name to schedule an appointment');
+            return;
+        } else if (!phoneNumber) {
+            alert('You must enter your phone number to schedule an appointment');
+            return;
+        } else if (!currentDate) {
+            alert('You must select a date and time to schedule an appointment');
+            return;
+        }
+
         if (!error) {
             try {
                 const { id } = paymentMethod;
                 const response = await axios({
                     method: 'POST',
                     url: 'http://localhost:3008/api/stripe/pay',
-                    data: { amount: 10000, id, haircutType: 'Lineup' },
+                    data: { currentStyle, currentDate, firstName, lastName, phoneNumber, isCreditPayment, id },
                     headers: {
                         'Content-Type': 'application/json',
                     },
                 });
 
-                if (response.data.success) {
+                if (response.data === 'success') {
+                    alert('Successfully booked appointment');
                     console.log('Successful payment');
                     setSuccess(true);
                 }
             } catch(e) {
                 console.log('There was an error creating this payment method:', e);
+                alert('There was an error booking that appointment');
             }
         } else {
             console.log('There was an error processing that payment:', error.message);
+            alert('There was an error processing that payment.');
         }
     }
 
@@ -206,18 +230,24 @@ export default function ScheduleAppointment() {
                     placeholder='First Name'
                     fullWidth 
                     label='First Name'
+                    value={firstName}
+                    onChange={handleFirstnameChange}
                 />
                 <TextField 
                     className='text-field'
                     placeholder='Last Name'
                     fullWidth
                     label='Last Name' 
+                    value={lastName}
+                    onChange={handleLastnameChange}
                 />
                 <MuiPhoneNumber 
                     className='text-field'
                     fullWidth
                     defaultCountry='us'
                     helperText='Enter Your Phone Number'
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
                 />
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
@@ -260,7 +290,7 @@ export default function ScheduleAppointment() {
                         </form>
                     ): (
                         <div>
-                            You just bought nothing basically 
+                            Appointment successfully scheduled
                         </div>
                     )}
                 </StyledPaymentContainer>

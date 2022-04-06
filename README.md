@@ -4,7 +4,9 @@
 
 This is the official web application for the FreshCutz Barber shop.
 This application allows customers to learn about us, select haircuts
-they like, contact us, schedule & pay for appointments, and checkout reviews related to our services. 
+they like, contact us, schedule & pay for appointments, and checkout reviews related to our services. This is a fully responsive progressive 
+web application that delivers a consistent experience on desktop and 
+mobile devices alike.
 
 ## Running code steps: 
 - Navigate to the root project directory.
