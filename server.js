@@ -13,6 +13,7 @@ const { contact, scheduleAppointment } = require('./routes');
 
 app.set('appName', 'FreshCutz');
 app.set('port', dotenv.parsed.PORT || 3001);
+console.log('The port for this application is:', dotenv.parsed.port);
 
 app.use(logger());
 app.use(errorHandler());
@@ -47,5 +48,9 @@ const server = http.createServer(app);
 
 server.listen(app.get('port'), () => {
     console.log(`Server listening on port ${app.get('port')}`);
+});
+
+process.on('uncaughtException', e => {
+    console.log('Process error:', e.message);
 });
 
