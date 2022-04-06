@@ -80,7 +80,7 @@ function ContactPageDisplayLayer({ alertState, updateAlert }: ContactPageDisplay
         setIsSendingData(true);
         return axios({
             method: 'POST',
-            url: 'http://localhost:3008/api/contact',
+            url: 'https://fresh-cutz.herokuapp.com/api/contact',
             data: { firstName, lastName, phoneNumber, msg },
             headers: {
                 'Content-Type': 'application/json',

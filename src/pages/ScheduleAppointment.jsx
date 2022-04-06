@@ -191,7 +191,7 @@ export default function ScheduleAppointment() {
                 const { id } = paymentMethod;
                 const response = await axios({
                     method: 'POST',
-                    url: 'http://localhost:3008/api/stripe/pay',
+                    url: 'https://fresh-cutz.herokuapp.com/api/stripe/pay',
                     data: { currentStyle, currentDate, firstName, lastName, phoneNumber, isCreditPayment, id },
                     headers: {
                         'Content-Type': 'application/json',
